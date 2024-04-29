@@ -33,13 +33,24 @@ async function run() {
         const spotCollection = client.db('touristSpot').collection('spots');
 
 
+        app.get('/addSpot', async (req, res) => {
+            const cursor = spotCollection.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+
         app.post('/addSpot', async (req, res) => {
             console.log(req.body);
             const result = await spotCollection.insertOne(req.body);
             res.send(result)
-})
+        })
 
-
+        app.get('/myList/:email', async (req, res) => {
+            console.log(req.params.email);
+            const result = await spotCollection.find({ Email: req.params.email }).toArray();
+            res.send(result)
+        })
 
 
 
