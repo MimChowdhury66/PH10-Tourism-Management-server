@@ -53,7 +53,8 @@ async function run() {
 
 
         app.get('/country/:countryName', async (req, res) => {
-            const result = await countryCollection.find({ CountryName: req.params.countryName }).toArray();
+            const cursor = spotCollection.find({ CountryName: req.params.countryName });
+            const result = await cursor.toArray();
             res.send(result)
         })
 
