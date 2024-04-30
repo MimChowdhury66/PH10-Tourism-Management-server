@@ -28,7 +28,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const spotCollection = client.db('touristSpot').collection('spots');
 
@@ -60,12 +60,32 @@ async function run() {
             res.send(result)
         })
 
-
+        app.put('/updateSpot/:id', async (req, res) => {
+            console.log(req.params.id)
+            const query = { _id: new ObjectId(req.params.id) };
+            const options = { upsert: true };
+            const data = {
+                $set: {
+                    PhotoURL: req.body.PhotoURL,
+                    AverageCost: req.body.AverageCost,
+                    SpotName: req.body.SpotName,
+                    TotalVisitor: req.body.TotalVisitor,
+                    TravelTime: req.body.TravelTime,
+                    Seasonality: req.body.Seasonality,
+                    CountryName: req.body.CountryName,
+                    Location: req.body.Location,
+                    Description: req.body.Description,
+                }
+            }
+            const result = await spotCollection.updateOne(query, data, options);
+            console.log(result);
+            res.send(result)
+        })
 
 
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
+        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
