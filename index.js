@@ -82,6 +82,15 @@ async function run() {
             res.send(result)
         })
 
+        app.delete('/delete/:id', async (req, res) => {
+            const result = await spotCollection.deleteOne({ _id: new ObjectId(req.params.id) })
+            console.log(result);
+            res.send(result)
+})
+
+
+
+
 
 
         // Send a ping to confirm a successful connection
