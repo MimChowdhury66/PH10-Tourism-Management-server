@@ -32,10 +32,28 @@ async function run() {
 
         const spotCollection = client.db('touristSpot').collection('spots');
 
+        const countryCollection = client.db('countrySection').collection('country');
+
+
+
+
 
         app.get('/addSpot', async (req, res) => {
             const cursor = spotCollection.find();
             const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        app.get('/country', async (req, res) => {
+            const cursor = countryCollection
+                .find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+
+        app.get('/country/:countryName', async (req, res) => {
+            const result = await countryCollection.find({ CountryName: req.params.countryName }).toArray();
             res.send(result)
         })
 
@@ -86,7 +104,7 @@ async function run() {
             const result = await spotCollection.deleteOne({ _id: new ObjectId(req.params.id) })
             console.log(result);
             res.send(result)
-})
+        })
 
 
 
