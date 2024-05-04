@@ -110,6 +110,26 @@ async function run() {
         })
 
 
+        // SORTING
+
+        // get all spots
+        app.get('/all-tourist-spot', async (req, res) => {
+            const query = req.query;
+            console.log(query)
+            // create options for sort
+            let options = {};
+            if (query.sortBy === 'cost-asc') {
+                options.sort = { AverageCost: 1 }
+            }
+            else if (query.sortBy === 'cost-des') {
+                options.sort = { AverageCost: -1 }
+            }
+            console.log(options)
+            let cursor = spotCollection.find({}, options)
+            const result = await cursor.toArray();
+            res.send(result)
+            console.log(result)
+        })
 
 
 
